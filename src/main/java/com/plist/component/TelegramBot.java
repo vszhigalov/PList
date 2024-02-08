@@ -3,16 +3,12 @@ package com.plist.component;
 import com.plist.command.CommandContainer;
 import com.plist.configuration.TelegramBotConfig;
 import com.plist.processor.TextMessageProcessorContainer;
-import com.plist.service.telegram.SendBotMessageService;
 import lombok.SneakyThrows;
-import org.aspectj.apache.bcel.classfile.Method;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,27 +24,29 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
     @Autowired
-    public TelegramBot(TelegramBotConfig telegramBotConfig) {
+    public TelegramBot(TelegramBotConfig telegramBotConfig,
+                       CommandContainer commandContainer,
+                       TextMessageProcessorContainer textMessageProcessorContainer) {
         this.telegramBotConfig = telegramBotConfig;
-        this.commandContainer = new CommandContainer(new SendBotMessageService(this));
-        this.textMessageProcessorContainer =
-                new TextMessageProcessorContainer(new SendBotMessageService(this));
+        this.commandContainer = commandContainer;
+        this.textMessageProcessorContainer = textMessageProcessorContainer;
     }
 
 
+    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().getText().startsWith("/")) {
-            commandContainer.findCommand(update.getMessage().getText()).execute(update);
+           execute(commandContainer.findCommand(update.getMessage().getText()).execute(update));
         } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             lastButtonAction.put(callbackQuery.getMessage().getChatId().toString(),
                     callbackQuery.getData());
-            commandContainer.findCommand(callbackQuery.getData()).execute(update);
+            execute(commandContainer.findCommand(callbackQuery.getData()).execute(update));
         } else if (update.getMessage().hasText()) {
             String chatId = update.getMessage().getChatId().toString();
-            textMessageProcessorContainer
-                    .findCommand(lastButtonAction.get(chatId)).processMessage(update);
+           execute(textMessageProcessorContainer
+                    .findCommand(lastButtonAction.get(chatId)).processMessage(update));
             lastButtonAction.remove(chatId);
         }
     }

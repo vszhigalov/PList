@@ -1,6 +1,5 @@
 package com.plist.command;
 
-import com.plist.service.telegram.SendBotMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +10,13 @@ public class CommandContainer {
     private final Map<String, Command> commandMap;
 
     @Autowired
-    public CommandContainer(SendBotMessageService sendBotMessageService) {
+    public CommandContainer(StartCommand startCommand,
+                            AddDishCommand addDishCommand,
+                            RemoveDishCommand removeDishCommand) {
         this.commandMap = new HashMap<>();
-        commandMap.put("/start", new StartCommand(sendBotMessageService));
-        commandMap.put("/add_dish", new AddDishCommand(sendBotMessageService));
+        commandMap.put("/start", startCommand);
+        commandMap.put("/add_dish", addDishCommand);
+        commandMap.put("/remove_dish", removeDishCommand);
     }
 
     public Command findCommand(String commandName){

@@ -1,18 +1,21 @@
 package com.plist.processor;
 
-import com.plist.service.telegram.SendBotMessageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class TextMessageProcessorContainer {
 
     private final Map<String, TextMessageHandler> processorMap;
 
-
-    public TextMessageProcessorContainer(SendBotMessageService sendBotMessageService) {
+    @Autowired
+    public TextMessageProcessorContainer(AddDishTextMessageProcessor addDishTextMessageProcessor) {
         this.processorMap = new HashMap<>();
-        processorMap.put("/add_dish", new AddDishTextMessageProcessor(sendBotMessageService));
+        processorMap.put("/add_dish", addDishTextMessageProcessor);
+        processorMap.put("/remove_dish", addDishTextMessageProcessor);
     }
 
     public TextMessageHandler findCommand(String commandName) {

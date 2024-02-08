@@ -9,24 +9,25 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
-public class AddDishTextMessageProcessor implements TextMessageHandler {
+public class RemoveDishMessageProcessor implements TextMessageHandler {
 
-    private final SendBotMessagePreparator sendBotMessageService;
+    private final SendBotMessagePreparator sendBotMessagePreparator;
+
     private final DishService dishService;
 
     @Autowired
-    public AddDishTextMessageProcessor(SendBotMessagePreparator sendBotMessageService,
-                                       DishService dishService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public RemoveDishMessageProcessor(SendBotMessagePreparator sendBotMessagePreparator,
+                                      DishService dishService) {
+        this.sendBotMessagePreparator = sendBotMessagePreparator;
         this.dishService = dishService;
     }
 
     @Override
-    public SendMessage processMessage(Update update) { // add fail log there
+    public SendMessage processMessage(Update update) {
         long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText();
-        dishService.save(new Dish(chatId, text));
-        return sendBotMessageService.prepareMessage(chatId,
-                "Dish with following name was added \n" + text);
+        dishService.delete(new Dish(chatId, text));
+        return sendBotMessagePreparator.prepareMessage(chatId,
+                "Dish with following name was removed \n" + text);
     }
 }

@@ -1,9 +1,10 @@
 package com.plist.command;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public interface Command {
+public interface Command{
 
 
-    void execute(Update update);
+    SendMessage execute(Update update);
 }
