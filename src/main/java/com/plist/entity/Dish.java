@@ -3,6 +3,7 @@ package com.plist.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class Dish extends AbstractEntity {
     private String name;
     @Column(name = "chatId")
     private long chatId;
-    @OneToMany(mappedBy = "dishId")
+    @OneToMany(mappedBy = "dish", fetch = FetchType.LAZY)
     private List<Product> productList;
 
 

@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
+import javax.annotation.Nullable;
 
 @Entity
 @Table(name = "products")
@@ -24,17 +27,23 @@ public class Product extends AbstractEntity {
     @Column(name = "count")
     private double count;
     @Column(name = "dishid")
-    private int dishId;
+    private long dishId;
     @ManyToOne
-    @JoinColumn(name = "ID", nullable = false,
+    @JoinColumn(name = "dishId", nullable = false,
             updatable = false,
             insertable = false)
     private Dish dish;
 
-    public Product(String name, double weight, double count, int dishId) {
+    public Product(String name, double weight, double count, long dishId) {
         this.name = name;
         this.weight = weight;
         this.count = count;
         this.dishId = dishId;
+    }
+
+
+    @Override
+    public String toString() {
+        return name + ", amount: "+count+", weight: "+weight;
     }
 }

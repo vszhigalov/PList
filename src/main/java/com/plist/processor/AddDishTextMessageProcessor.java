@@ -25,8 +25,13 @@ public class AddDishTextMessageProcessor implements TextMessageHandler {
     public SendMessage processMessage(Update update) { // add fail log there
         long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText();
-        dishService.save(new Dish(chatId, text));
-        return sendBotMessageService.prepareMessage(chatId,
-                "Dish with following name was added \n" + text);
+        if (dishService.getDishByNameAndChatId(text,chatId) == null){
+            dishService.save(new Dish(chatId, text));
+            return sendBotMessageService.prepareMessage(chatId,
+                    "Dish with following name was added \n" + text);
+        } else {
+            return sendBotMessageService.prepareMessage(chatId,
+                    "Dish name already exist \n" + text);
+        }
     }
 }

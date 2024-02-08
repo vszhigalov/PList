@@ -26,7 +26,8 @@ public class RemoveDishMessageProcessor implements TextMessageHandler {
     public SendMessage processMessage(Update update) {
         long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText();
-        dishService.delete(new Dish(chatId, text));
+        Dish dish = dishService.getDishByNameAndChatId(text,chatId);
+        dishService.delete(dish);
         return sendBotMessagePreparator.prepareMessage(chatId,
                 "Dish with following name was removed \n" + text);
     }

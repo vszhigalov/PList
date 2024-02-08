@@ -12,4 +12,8 @@ public class DishService extends AbstractService<Dish, DishRepository>{
     public DishService(DishRepository repository) {
         super(repository);
     }
+
+    public Dish getDishByNameAndChatId(String name, long chatId){
+        return repository.getDishByNameAndChatId(name, chatId);
+    }
 }

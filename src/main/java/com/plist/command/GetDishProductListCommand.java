@@ -5,20 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 @Component
-public class RemoveDishCommand implements Command {
+public class GetDishProductListCommand implements Command{
 
-    private final SendBotMessagePreparator sendBotMessageService;
-    private final String CALLBACK_MESSAGE = "Write dish name which you want to delete";
+    private final SendBotMessagePreparator sendBotMessagePreparator;
+
+    private final String CALLBACK_MESSAGE = "Specify dish name";
     @Autowired
-    public RemoveDishCommand(SendBotMessagePreparator sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public GetDishProductListCommand(SendBotMessagePreparator sendBotMessagePreparator) {
+        this.sendBotMessagePreparator = sendBotMessagePreparator;
     }
 
     @Override
     public SendMessage execute(Update update) {
-        return sendBotMessageService.prepareMessage(update
+        return sendBotMessagePreparator.prepareMessage(update
                         .getCallbackQuery()
                         .getMessage()
                         .getChatId()

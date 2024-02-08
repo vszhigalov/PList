@@ -20,7 +20,12 @@ public enum StartButton {
             InlineKeyboardButton.builder()
             .text("Remove dish")
             .callbackData("/remove_dish")
-            .build());
+            .build()),
+    ADD_PRODUCTS_TO_DISH(
+            InlineKeyboardButton.builder()
+                    .text("Add products to dish")
+                    .callbackData("/add_products_to_dish")
+                    .build());
 //    ADD_DISH_TO_BUY_LIST(
 //            InlineKeyboardButton.builder()
 //            .text("Add dish to buy list")
