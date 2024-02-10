@@ -5,23 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 @Component
-public class AddProductsToDishCommand implements Command{
+public class ShowCommonProductsForDishesCommand implements Command{
 
     private final SendBotMessagePreparator sendBotMessageService;
-    private final String CALLBACK_MESSAGE = "Specify dish name as a header, " +
-            "after that specify each product from new line. \n" +
+    private final String CALLBACK_MESSAGE = "Specify each dish from new line \n" +
             "Like : \n" +
-            "Dish name\n" +
-            "Product 1, weight\n" +
-            "Product 2, weight \n" +
-            "and etc. \n" +
-            "Additional Notes : \n" +
-            "If you don't want to specify weight, just leave it. \n" +
-            "Like: \n" +
-            "'Product 1'";
+            "Dish 1 \n" +
+            "Dish 2 \n" +
+            "and etc.";
     @Autowired
-    public AddProductsToDishCommand(SendBotMessagePreparator sendBotMessageService) {
+    public ShowCommonProductsForDishesCommand(SendBotMessagePreparator sendBotMessageService) {
         this.sendBotMessageService = sendBotMessageService;
     }
 

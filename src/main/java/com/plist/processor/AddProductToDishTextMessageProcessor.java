@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class AddProductToDishTextMessageProcessor implements TextMessageHandler{
+public class AddProductToDishTextMessageProcessor implements TextMessageHandler {
 
     private final SendBotMessagePreparator sendBotMessagePreparator;
 
@@ -37,16 +37,15 @@ public class AddProductToDishTextMessageProcessor implements TextMessageHandler{
         List<String> preparedList = new ArrayList<>(
                 Arrays.asList(update.getMessage().getText().split("\n")));
         Dish dish = dishService.getDishByNameAndChatId(preparedList.get(0), chatId);
-        if (dish == null){
+        if (dish == null) {
             return sendBotMessagePreparator.prepareMessage(chatId,
                     "Dish with following name doesn't exist : \n"
                             + preparedList.get(0));
-        }else {
+        } else {
             preparedList.remove(0);
-         preparedList.forEach(x -> productService.save(new Product(x, 0.0, 0.0, dish.getId())));
+            preparedList.forEach(x -> productService.save(new Product(x, dish.getId())));
             return sendBotMessagePreparator.prepareMessage(chatId,
-                    "Products for following dish were added : \n"
-                            + dish.getName());
+                    "Products for " + dish.getName() + " dish were added");
         }
     }
 }

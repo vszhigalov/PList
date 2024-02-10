@@ -14,13 +14,15 @@ public class CommandContainer {
                             AddDishCommand addDishCommand,
                             RemoveDishCommand removeDishCommand,
                             AddProductsToDishCommand addProductsToDish,
-                            GetDishProductListCommand getDishProductListCommand) {
+                            GetDishProductListCommand getDishProductListCommand,
+                            ShowCommonProductsForDishesCommand showCommonProductsForDishesCommand) {
         this.commandMap = new HashMap<>();
         commandMap.put("/start", startCommand);
         commandMap.put("/add_dish", addDishCommand);
         commandMap.put("/remove_dish", removeDishCommand);
         commandMap.put("/add_products_to_dish", addProductsToDish);
         commandMap.put("/get_dish_products", getDishProductListCommand);
+        commandMap.put("/show_common_products_for_dishes", showCommonProductsForDishesCommand);
     }
 
     public Command findCommand(String commandName){

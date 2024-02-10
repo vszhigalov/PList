@@ -12,6 +12,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -23,7 +25,7 @@ public class Product extends AbstractEntity {
     @Column(name = "name")
     private String name;
     @Column(name = "weight")
-    private double weight;
+    private Double weight;
     @Column(name = "count")
     private double count;
     @Column(name = "dishid")
@@ -41,9 +43,21 @@ public class Product extends AbstractEntity {
         this.dishId = dishId;
     }
 
+    public Product(Double weight, String name){
+        this.name = name;
+        this.weight = weight;
+    }
+
 
     @Override
     public String toString() {
-        return name + ", amount: "+count+", weight: "+weight;
+        return name + ", weight: " + weight;
+    }
+
+    public Product(String productData, long dishId) {
+        List<String> data = Arrays.asList(productData.split(","));
+        this.name = data.get(0);
+        this.weight = data.size() > 1 ? Double.parseDouble(data.get(1)) : 0;
+        this.dishId = dishId;
     }
 }
